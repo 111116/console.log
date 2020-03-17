@@ -32,6 +32,9 @@ public:
 	void time(const std::string& label = "default");
 	void timeLog(const std::string& label = "default");
 	void timeEnd(const std::string& label = "default");
+	// counter functions
+	void count(const std::string& label = "default");
+	void countReset(const std::string& label = "default");
 
 protected:
 	void print();
@@ -40,6 +43,7 @@ protected:
 	template <typename T, typename... Args>
 	void print(const T& t, const Args&... args);
 	std::unordered_map<std::string, std::chrono::time_point<std::chrono::system_clock>> starttimes;
+	std::unordered_map<std::string, long long> counts;
 };
 }
 
@@ -158,6 +162,22 @@ inline void ConsoleLogger::timeEnd(const std::string& label)
 	std::chrono::duration<double> seconds = now - starttimes[label];
 	out << "    "+label+": " << 0.001*round(seconds.count()*1000) << "s - timer ended" << std::endl;
 	starttimes.erase(label);
+}
+
+inline void ConsoleLogger::countReset(const std::string& label)
+{
+	if (!counts.count(label))
+	{
+		warn("Counter \"" + label + "\" doesn't exist.");
+		return;
+	}
+	counts[label] = 0;
+	out << "    "+label+": 0" << std::endl;
+}
+
+inline void ConsoleLogger::count(const std::string& label)
+{
+	out << "    "+label+": " << ++counts[label] << std::endl;
 }
 
 } // end namespace
