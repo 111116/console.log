@@ -2,7 +2,7 @@
 
 I hate typing `std::cout << blah << " " << blah << std::endl;` especially after I got used to the browser Javascript `console.log(blah,blah)` so I made this.
 
-And it's got a **colorized output** (when stderr is outputing to console) and more!
+And it's got a **colorized output** (when stderr is outputing to console) and more! Setting log level is also supported.
 
 ## Integration
 
