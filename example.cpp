@@ -1,15 +1,19 @@
 #include "consolelogger.hpp"
+#include <cmath>
+#include <iomanip>
 
 
 int main() {
-	console.log();
-	console.log(1);
-	console.log(1,"asd");
-	// console.log("\033[1;31mMajiyabakune?\033[0m");
-	// console.log("\033[1;32mMajiyabakune?\033[0m");
-	// console.log("\033[1;33mMajiyabakune?\033[0m");
-	// console.log("\033[1;28mMajiyabakune?\033[0m");
-	// console.log("\033[1;27mMajiyabakune?\033[0m");
-	// console.log("\033[1;26mMajiyabakune?\033[0m");
-	// console.time();
+	// console.time("total");
+	console.log("Here prints a log");
+	console.info("Here prints an info.");
+	console.warn("Here prints a warning!");
+	console.error("Here prints an error!!");
+	console.debug("This won't be visible if NDEBUG is defined");
+	// it's just a wrapper of std::cerr
+	std::cerr << std::fixed << std::setprecision(2);
+	console.log("iomanip can be used on std::cerr", acos(-1));
+	// timer label defaults to "default" if omitted
+	// console.timeLog("total");
+	// console.timeEnd("total");
 }
