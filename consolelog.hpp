@@ -33,8 +33,8 @@ public:
 	void timeLog(const std::string& label = "default");
 	void timeEnd(const std::string& label = "default");
 	// counter functions
-	void count(const std::string& label = "default");
-	void countReset(const std::string& label = "default");
+	long long count(const std::string& label = "default");
+	long long countReset(const std::string& label = "default");
 
 protected:
 	void print();
@@ -148,7 +148,8 @@ inline void ConsoleLogger::timeLog(const std::string& label)
 	}
 	auto now = std::chrono::system_clock::now();
 	std::chrono::duration<double> seconds = now - starttimes[label];
-	out << "    "+label+": " << (long long)(seconds.count()*1000)/1000 << "s" << std::endl;
+	if (loglevel <= 0)
+		out << "    "+label+": " << (long long)(seconds.count()*1000)/1000 << "s" << std::endl;
 }
 
 inline void ConsoleLogger::timeEnd(const std::string& label)
@@ -160,24 +161,30 @@ inline void ConsoleLogger::timeEnd(const std::string& label)
 	}
 	auto now = std::chrono::system_clock::now();
 	std::chrono::duration<double> seconds = now - starttimes[label];
-	out << "    "+label+": " << 0.001*round(seconds.count()*1000) << "s - timer ended" << std::endl;
+	if (loglevel <= 0)
+		out << "    "+label+": " << 0.001*round(seconds.count()*1000) << "s - timer ended" << std::endl;
 	starttimes.erase(label);
 }
 
-inline void ConsoleLogger::countReset(const std::string& label)
+inline long long ConsoleLogger::countReset(const std::string& label)
 {
 	if (!counts.count(label))
 	{
 		warn("Counter \"" + label + "\" doesn't exist.");
-		return;
+		return -1;
 	}
 	counts[label] = 0;
-	out << "    "+label+": 0" << std::endl;
+	if (loglevel <= 0)
+		out << "    "+label+": 0" << std::endl;
+	return 0;
 }
 
-inline void ConsoleLogger::count(const std::string& label)
+inline long long ConsoleLogger::count(const std::string& label)
 {
-	out << "    "+label+": " << ++counts[label] << std::endl;
+	int t = ++counts[label];
+	if (loglevel <= 0)
+		out << "    "+label+": " << t << std::endl;
+	return t;
 }
 
 } // end namespace
