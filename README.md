@@ -1,6 +1,6 @@
 # console.log
 
-I hate typing `std::cout << blah << " " << blah << std::endl;` especially after I got used to the browser Javascript `console.log(blah,blah)` so I made this.
+I hate typing `std::cerr << blah << " " << blah << std::endl;` especially after I got used to the browser Javascript `console.log(blah,blah)` so I made this.
 
 And it's got a **colorized output** (when stderr is outputing to console) and more! Setting log level is also supported.
 
@@ -18,11 +18,10 @@ console.info(...);
 console.warn(...);
 console.error(...);
 
-console.time("label"); // label name can be omitted
+console.time("label"); // label name can be omitted; same below
 console.timeLog("label");
 console.timeEnd("label");
-
-console.count("label"); // label name can be omitted
+console.count("label");
 console.countReset("label");
 ```
 
