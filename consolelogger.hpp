@@ -6,6 +6,7 @@
 #include <unordered_map> // label-time pairs
 #include <string> // labels
 #include <chrono> // time
+#include <cmath>
 
 namespace github111116 {
 class ConsoleLogger
@@ -27,10 +28,10 @@ public:
 	template <typename... Args> void warn(const Args&... args); // loglevel:2
 	template <typename... Args> void error(const Args&... args); // loglevel:3
 	template <typename... Args> void debug(const Args&... args); // only affected by NDEBUG flag
-	// timer functions (link consoletimer.cpp if you use these)
-	void time(std::string label = "default");
-	void timeLog(std::string label = "default");
-	void timeEnd(std::string label = "default");
+	// timer functions
+	void time(const std::string& label = "default");
+	void timeLog(const std::string& label = "default");
+	void timeEnd(const std::string& label = "default");
 
 protected:
 	void print();
@@ -122,6 +123,41 @@ void ConsoleLogger::print(const T& t, const Args&... args)
 {
 	out << t << " ";
 	print(args...);
+}
+
+inline void ConsoleLogger::time(const std::string& label)
+{
+	if (starttimes.count(label))
+	{
+		warn("Timer \"" + label + "\" already exists.");
+		return;
+	}
+	starttimes[label] = std::chrono::system_clock::now();
+}
+
+inline void ConsoleLogger::timeLog(const std::string& label)
+{
+	if (!starttimes.count(label))
+	{
+		warn("Timer \"" + label + "\" doesn't exist.");
+		return;
+	}
+	auto now = std::chrono::system_clock::now();
+	std::chrono::duration<double> seconds = now - starttimes[label];
+	out << "    "+label+": " << (long long)(seconds.count()*1000)/1000 << "s" << std::endl;
+}
+
+inline void ConsoleLogger::timeEnd(const std::string& label)
+{
+	if (!starttimes.count(label))
+	{
+		warn("Timer \"" + label + "\" doesn't exist.");
+		return;
+	}
+	auto now = std::chrono::system_clock::now();
+	std::chrono::duration<double> seconds = now - starttimes[label];
+	out << "    "+label+": " << 0.001*round(seconds.count()*1000) << "s - timer ended" << std::endl;
+	starttimes.erase(label);
 }
 
 } // end namespace
