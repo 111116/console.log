@@ -7,13 +7,14 @@
 class ConsoleLogger
 {
 private:
-	std::ostream& os;
+	std::ostream& out;
 
 public:
 	int errorColor = 31;
 	int infoColor = 32;
 	int warnColor = 33;
 
+	bool colored = false;
 	int loglevel = 0;
 
 	ConsoleLogger(std::ostream&, bool colored);
@@ -37,12 +38,11 @@ public:
 	void timeEnd(std::string label);
 
 protected:
-	template <typename... Args>
-	void _log(const Args&... args);
-	// template <typename T>
-	// void _log(const T& t);
-	// template <typename T, typename... Args>
-	// void _log(const T& t, const Args&... args);
+	void _log();
+	template <typename T>
+	void _log(const T& t);
+	template <typename T, typename... Args>
+	void _log(const T& t, const Args&... args);
 };
 
 extern ConsoleLogger console;
@@ -51,10 +51,9 @@ extern ConsoleLogger console;
 // ========== Implementation Starts ===========
 
 
-inline ConsoleLogger::ConsoleLogger(std::ostream& os, bool colored): os(os)
+inline ConsoleLogger::ConsoleLogger(std::ostream& out, bool colored):
+	out(out), colored(colored)
 {
-	if (colored) {
-	}
 }
 
 
@@ -82,20 +81,24 @@ void ConsoleLogger::error(const Args&... args)
 	_log(args...);
 }
 
-template <typename... Args>
-void ConsoleLogger::_log(const Args&... args)
-{
 
+inline void ConsoleLogger::_log()
+{
+	out << std::endl;
 }
 
-// template <typename T, typename... Args>
-// void ConsoleLogger::_log(const T& t, const Args&... args)
-// {
-// 	// _log(args...);
-// }
-// void ConsoleLogger::
-		// log(args...);
+template <typename T>
+void ConsoleLogger::_log(const T& t)
+{
+	out << t;
+	_log();
+}
 
-
+template <typename T, typename... Args>
+void ConsoleLogger::_log(const T& t, const Args&... args)
+{
+	out << t << " ";
+	_log(args...);
+}
 
 
