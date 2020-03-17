@@ -8,7 +8,7 @@ And it's got a **colorized output** (when stderr is outputing to console) and mo
 
 You only need to include the file `consolelog.hpp` and start using `console.log` in your project!
 
-Note that you should use at least C++11.
+Note that you should use C++11 or above.
 
 ## Usage
 
