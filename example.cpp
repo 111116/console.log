@@ -11,4 +11,5 @@ int main() {
 	// console.log("\033[1;28mMajiyabakune?\033[0m");
 	// console.log("\033[1;27mMajiyabakune?\033[0m");
 	// console.log("\033[1;26mMajiyabakune?\033[0m");
+	// console.time();
 }

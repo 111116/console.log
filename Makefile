@@ -1,2 +1,2 @@
-example: consolelogger.hpp example.cpp consolelogger.cpp 
-	g++ -std=c++11 consolelogger.cpp example.cpp -o example
+example: consolelogger.hpp example.cpp aux.cpp 
+	g++ -std=c++11 example.cpp aux.cpp -o example

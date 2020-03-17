@@ -1,8 +1,11 @@
-//
+// console.log: Javascript-styled console logger for C++
 #pragma once
 
 #include <iostream>
+#include <unordered_map>
 #include <string>
+#include <unistd.h>
+
 
 class ConsoleLogger
 {
@@ -11,94 +14,84 @@ private:
 
 public:
 	int errorColor = 31;
-	int infoColor = 32;
-	int warnColor = 33;
-
-	bool colored = false;
+	int  infoColor = 32;
+	int  warnColor = 33;
 	int loglevel = 0;
+	bool colored = false;
 
-	ConsoleLogger(std::ostream&, bool colored);
-
+	ConsoleLogger(std::ostream& out, bool colored);
 	// basic logging functions
-	template <typename... Args>
-	void log(const Args&... args);
-
-	template <typename... Args>
-	void info(const Args&... args);
-
-	template <typename... Args>
-	void warn(const Args&... args);
-
-	template <typename... Args>
-	void error(const Args&... args);
-
+	template <typename... Args> void log(const Args&... args);
+	template <typename... Args> void info(const Args&... args);
+	template <typename... Args> void warn(const Args&... args);
+	template <typename... Args> void error(const Args&... args);
 	// timer functions (link consoletimer.cpp if you use these)
-	void time(std::string label);
-	void timeLog(std::string label);
-	void timeEnd(std::string label);
+	void time(std::string label = "default");
+	void timeLog(std::string label = "default");
+	void timeEnd(std::string label = "default");
 
 protected:
-	void _log();
+	void print();
 	template <typename T>
-	void _log(const T& t);
+	void print(const T& t);
 	template <typename T, typename... Args>
-	void _log(const T& t, const Args&... args);
+	void print(const T& t, const Args&... args);
+	std::unordered_map<std::string, std::chrono::time_point<std::chrono::system_clock>> starttimes;
 };
 
-extern ConsoleLogger console;
+__attribute__((weak)) ConsoleLogger console(std::cerr, isatty(fileno(stderr)));
 
 
 // ========== Implementation Starts ===========
 
-
 inline ConsoleLogger::ConsoleLogger(std::ostream& out, bool colored):
 	out(out), colored(colored)
 {
-}
 
+}
 
 template <typename... Args>
 void ConsoleLogger::log(const Args&... args)
 {
-	_log(args...);
+	print(args...);
 }
 
 template <typename... Args>
 void ConsoleLogger::info(const Args&... args)
 {
-	_log(args...);
+	print(args...);
 }
 
 template <typename... Args>
 void ConsoleLogger::warn(const Args&... args)
 {
-	_log(args...);
+	print(args...);
 }
 
 template <typename... Args>
 void ConsoleLogger::error(const Args&... args)
 {
-	_log(args...);
+	print(args...);
 }
 
 
-inline void ConsoleLogger::_log()
+inline void ConsoleLogger::print()
 {
 	out << std::endl;
 }
 
 template <typename T>
-void ConsoleLogger::_log(const T& t)
+void ConsoleLogger::print(const T& t)
 {
 	out << t;
-	_log();
+	print();
 }
 
 template <typename T, typename... Args>
-void ConsoleLogger::_log(const T& t, const Args&... args)
+void ConsoleLogger::print(const T& t, const Args&... args)
 {
 	out << t << " ";
-	_log(args...);
+	print(args...);
 }
 
 
