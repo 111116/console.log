@@ -1,4 +1,4 @@
-all: example example_advanced
+all: example example_advanced *.hpp *.cpp
 
 example: consolelog.hpp example.cpp Makefile
 	g++ -std=c++11 example.cpp -o example

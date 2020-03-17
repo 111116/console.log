@@ -33,10 +33,15 @@ namespace std {
 
 int main()
 {
+	// console.loglevel = 3; // error only
+	// console.loglevel = 2; // warning & above
+	// console.loglevel = 1; // info & above
+	// console.loglevel = 0; // logs, timers, counters & above (default)
 	console.log("Here prints a log");
 	console.info("Here prints an info.");
 	console.warn("Here prints a warning!");
 	console.error("Here prints an error!!");
+	// debugs are not affected by loglevel
 	console.debug("This won't be visible if NDEBUG is defined");
 	console.log();
 
@@ -56,6 +61,7 @@ int main()
 
 	// counter label can be omitted
 	console.count("test");
-	console.count("test");
+	// it returns the corresponding count value
+	int t = console.count("test");
 	console.countReset("test");
 }
