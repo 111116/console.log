@@ -1,4 +1,4 @@
-// console.log v1.1
+// console.log v1.2
 // Javascript-styled console logger for C++
 // https://github.com/111116/console.log
 #pragma once
@@ -147,9 +147,7 @@ inline void ConsoleLogger::time(const std::string& label)
 {
 	if (starttimes.count(label))
 	{
-		mtx.lock();
 		warn("Timer \"" + label + "\" already exists.");
-		mtx.unlock();
 		return;
 	}
 	mtx.lock();
@@ -161,9 +159,7 @@ inline void ConsoleLogger::timeLog(const std::string& label)
 {
 	if (!starttimes.count(label))
 	{
-		mtx.lock();
 		warn("Timer \"" + label + "\" doesn't exist.");
-		mtx.unlock();
 		return;
 	}
 	mtx.lock();
@@ -178,9 +174,7 @@ inline void ConsoleLogger::timeEnd(const std::string& label)
 {
 	if (!starttimes.count(label))
 	{
-		mtx.lock();
 		warn("Timer \"" + label + "\" doesn't exist.");
-		mtx.unlock();
 		return;
 	}
 	mtx.lock();
